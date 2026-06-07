@@ -74,15 +74,15 @@ end
 -- ABAS
 -- ==========================================
 print("[4] Criando abas...")
-local TabStats = Window:MakeTab({"Stats", "bar-chart"})
-local TabAutoFarm = Window:MakeTab({"Auto Farm", "swords"})
-local TabRebirth = Window:MakeTab({"Rebirth", "refresh-cw"})
-local TabGlitch = Window:MakeTab({"Glitch", "zap"})
-local TabPets = Window:MakeTab({"Pets", "star"})
-local TabTeleports = Window:MakeTab({"Teleports", "map-pin"})
-local TabKill = Window:MakeTab({"Kill", "skull"})
-local TabPlayer = Window:MakeTab({"Player", "user"})
-local TabSettings = Window:MakeTab({"Settings", "settings"})
+local TabStats = Window:MakeTab({ Name = "Stats", Icon = "bar-chart" })
+local TabAutoFarm = Window:MakeTab({ Name = "Auto Farm", Icon = "swords" })
+local TabRebirth = Window:MakeTab({ Name = "Rebirth", Icon = "refresh-cw" })
+local TabGlitch = Window:MakeTab({ Name = "Glitch", Icon = "zap" })
+local TabPets = Window:MakeTab({ Name = "Pets", Icon = "star" })
+local TabTeleports = Window:MakeTab({ Name = "Teleports", Icon = "map-pin" })
+local TabKill = Window:MakeTab({ Name = "Kill", Icon = "skull" })
+local TabPlayer = Window:MakeTab({ Name = "Player", Icon = "user" })
+local TabSettings = Window:MakeTab({ Name = "Settings", Icon = "settings" })
 
 -- STATS
 TabStats:AddDiscordInvite({
@@ -173,8 +173,8 @@ TabKill:AddButton({
 TabKill:AddButton({ Name = "Refresh Players", Callback = function() print("Lista atualizada apenas reabrindo o hub no momento") end })
 
 -- PLAYER
-TabPlayer:AddSlider({ Name = "WalkSpeed", Min = 16, Max = 200, Default = 16, Callback = function(Value) Config.WalkSpeed = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = Value end end })
-TabPlayer:AddSlider({ Name = "JumpPower", Min = 50, Max = 250, Default = 50, Callback = function(Value) Config.JumpPower = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.JumpPower = Value end end })
+TabPlayer:AddSlider({ Name = "WalkSpeed", MinValue = 16, MaxValue = 200, Default = 16, Callback = function(Value) Config.WalkSpeed = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = Value end end })
+TabPlayer:AddSlider({ Name = "JumpPower", MinValue = 50, MaxValue = 250, Default = 50, Callback = function(Value) Config.JumpPower = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.JumpPower = Value end end })
 TabPlayer:AddToggle({ Name = "NoClip", Default = false, Callback = function(Value) Config.NoClip = Value end })
 TabPlayer:AddButton({ Name = "Reset Character", Callback = function() if player.Character and player.Character:FindFirstChild("Head") then player.Character.Head:Destroy() end end })
 
