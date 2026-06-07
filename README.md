@@ -1,14 +1,17 @@
 --[[
-    WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+    Majested Hub : Muscle Legends
+    Correção: Tabs no formato correto da Redz + ícone do Glitch trocado.
 ]]
+
 print("[1] Iniciando o Majested Hub...")
 
 local successLib, redzlib = pcall(function()
     return loadstring(game:HttpGet("https://raw.githubusercontent.com/minhdepzai-v/LibraryRobloc/refs/heads/main/RedzLibrary.lua"))()
 end)
 
-if not successLib then
+if not successLib or not redzlib then
     warn("ERRO: O seu executor não conseguiu baixar a biblioteca Redz UI. Verifique sua internet ou tente outro executor.")
+    warn("Detalhe:", redzlib)
     return
 end
 
@@ -40,10 +43,10 @@ local Config = {
     AutoHandstands = false, AutoPunch = false, AutoRock = false,
     AutoPunchRock = false, AutoCrystal = false, AutoRebirth = false,
     AutoKill = false, NoClip = false,
-    
+
     SelectedRock = "King Muscle Rock", SelectedCrystal = "Blue Crystal",
     SelectedPlayer = "None", SelectedTeleport = "Spawn",
-    
+
     WalkSpeed = 16, JumpPower = 50
 }
 
@@ -56,10 +59,14 @@ local RockPositions = {
 }
 
 local TeleportLocations = {
-    ["Spawn"] = CFrame.new(8, 4, 114), ["Arena"] = CFrame.new(-120, 4, -305),
-    ["Tiny Island"] = CFrame.new(-4, 221, 1963), ["Frost Gym"] = CFrame.new(-2752, 125, -386),
-    ["Mythical Gym"] = CFrame.new(2386, 139, 1094), ["Legends Gym"] = CFrame.new(4298, 1121, -3898),
-    ["Inferno Gym"] = CFrame.new(-6917, 182, -1336), ["King Muscle Rock"] = CFrame.new(-8967, 1, -6127)
+    ["Spawn"] = CFrame.new(8, 4, 114),
+    ["Arena"] = CFrame.new(-120, 4, -305),
+    ["Tiny Island"] = CFrame.new(-4, 221, 1963),
+    ["Frost Gym"] = CFrame.new(-2752, 125, -386),
+    ["Mythical Gym"] = CFrame.new(2386, 139, 1094),
+    ["Legends Gym"] = CFrame.new(4298, 1121, -3898),
+    ["Inferno Gym"] = CFrame.new(-6917, 182, -1336),
+    ["King Muscle Rock"] = CFrame.new(-8967, 1, -6127)
 }
 
 local function EquipTool(toolName)
@@ -72,17 +79,22 @@ end
 
 -- ==========================================
 -- ABAS
+-- Formato correto da Redz: Window:MakeTab({"Nome", "icone"})
+-- Glitch: trocado de "zap" para "bolt"
 -- ==========================================
 print("[4] Criando abas...")
-local TabStats = Window:MakeTab({ Name = "Stats", Icon = "bar-chart" })
-local TabAutoFarm = Window:MakeTab({ Name = "Auto Farm", Icon = "swords" })
-local TabRebirth = Window:MakeTab({ Name = "Rebirth", Icon = "refresh-cw" })
-local TabGlitch = Window:MakeTab({ Name = "Glitch", Icon = "zap" })
-local TabPets = Window:MakeTab({ Name = "Pets", Icon = "star" })
-local TabTeleports = Window:MakeTab({ Name = "Teleports", Icon = "map-pin" })
-local TabKill = Window:MakeTab({ Name = "Kill", Icon = "skull" })
-local TabPlayer = Window:MakeTab({ Name = "Player", Icon = "user" })
-local TabSettings = Window:MakeTab({ Name = "Settings", Icon = "settings" })
+
+local TabStats = Window:MakeTab({"Stats", "bar-chart"})
+local TabAutoFarm = Window:MakeTab({"Auto Farm", "swords"})
+local TabRebirth = Window:MakeTab({"Rebirth", "refresh-cw"})
+local TabGlitch = Window:MakeTab({"Glitch", "bolt"})
+local TabPets = Window:MakeTab({"Pets", "star"})
+local TabTeleports = Window:MakeTab({"Teleports", "map-pin"})
+local TabKill = Window:MakeTab({"Kill", "skull"})
+local TabPlayer = Window:MakeTab({"Player", "user"})
+local TabSettings = Window:MakeTab({"Settings", "settings"})
+
+print("[4.1] Abas criadas!")
 
 -- STATS
 TabStats:AddDiscordInvite({
@@ -120,17 +132,17 @@ TabRebirth:AddDropdown({ Name = "Modo Rebirth", Options = {"Normal", "Fast", "Sa
 
 -- GLITCH
 TabGlitch:AddDropdown({ Name = "Selecionar Pedra", Options = {"King Muscle Rock", "Legend Rock", "Inferno Rock", "Mythical Rock", "Frost Rock"}, Default = "King Muscle Rock", Callback = function(Value) Config.SelectedRock = Value end })
-TabGlitch:AddToggle({ 
-    Name = "Auto Rock (Teleport)", Default = false, 
-    Callback = function(Value) 
-        Config.AutoRock = Value 
+TabGlitch:AddToggle({
+    Name = "Auto Rock (Teleport)", Default = false,
+    Callback = function(Value)
+        Config.AutoRock = Value
         if Value and Config.SelectedRock then
             local targetCFrame = RockPositions[Config.SelectedRock]
             if targetCFrame and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                 player.Character.HumanoidRootPart.CFrame = targetCFrame
             end
         end
-    end 
+    end
 })
 TabGlitch:AddToggle({ Name = "Auto Punch Rock", Default = false, Callback = function(Value) Config.AutoPunchRock = Value end })
 
@@ -142,11 +154,11 @@ TabPets:AddButton({ Name = "Unequip Pets", Callback = function() print("Unequip 
 
 -- TELEPORTS
 TabTeleports:AddDropdown({ Name = "Selecionar Local", Options = {"Spawn", "Arena", "Tiny Island", "Frost Gym", "Mythical Gym", "Legends Gym", "Inferno Gym", "King Muscle Rock"}, Default = "Spawn", Callback = function(Value) Config.SelectedTeleport = Value end })
-TabTeleports:AddButton({ 
-    Name = "Teleportar", Callback = function() 
+TabTeleports:AddButton({
+    Name = "Teleportar", Callback = function()
         local target = TeleportLocations[Config.SelectedTeleport]
         if target and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then player.Character.HumanoidRootPart.CFrame = target end
-    end 
+    end
 })
 TabTeleports:AddButton({ Name = "Rejoin", Callback = function() ts:Teleport(game.PlaceId, player) end })
 TabTeleports:AddButton({ Name = "Server Hop", Callback = function() ts:Teleport(game.PlaceId, player) end })
@@ -157,8 +169,8 @@ for _, v in pairs(game.Players:GetPlayers()) do if v ~= player then table.insert
 
 TabKill:AddDropdown({ Name = "Selecionar Player", Options = playerList, Default = "None", Callback = function(Value) Config.SelectedPlayer = Value end })
 TabKill:AddToggle({ Name = "Auto Kill", Default = false, Callback = function(Value) Config.AutoKill = Value end })
-TabKill:AddButton({ 
-    Name = "Kill Player", Callback = function() 
+TabKill:AddButton({
+    Name = "Kill Player", Callback = function()
         if Config.SelectedPlayer ~= "None" then
             local target = game.Players:FindFirstChild(Config.SelectedPlayer)
             if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and player.Character then
@@ -168,13 +180,13 @@ TabKill:AddButton({
                 player.muscleEvent:FireServer("punch", "rightHand")
             end
         end
-    end 
+    end
 })
 TabKill:AddButton({ Name = "Refresh Players", Callback = function() print("Lista atualizada apenas reabrindo o hub no momento") end })
 
 -- PLAYER
-TabPlayer:AddSlider({ Name = "WalkSpeed", MinValue = 16, MaxValue = 200, Default = 16, Callback = function(Value) Config.WalkSpeed = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = Value end end })
-TabPlayer:AddSlider({ Name = "JumpPower", MinValue = 50, MaxValue = 250, Default = 50, Callback = function(Value) Config.JumpPower = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.JumpPower = Value end end })
+TabPlayer:AddSlider({ Name = "WalkSpeed", Min = 16, Max = 200, Default = 16, Callback = function(Value) Config.WalkSpeed = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.WalkSpeed = Value end end })
+TabPlayer:AddSlider({ Name = "JumpPower", Min = 50, Max = 250, Default = 50, Callback = function(Value) Config.JumpPower = Value; if player.Character and player.Character:FindFirstChild("Humanoid") then player.Character.Humanoid.JumpPower = Value end end })
 TabPlayer:AddToggle({ Name = "NoClip", Default = false, Callback = function(Value) Config.NoClip = Value end })
 TabPlayer:AddButton({ Name = "Reset Character", Callback = function() if player.Character and player.Character:FindFirstChild("Head") then player.Character.Head:Destroy() end end })
 
@@ -199,13 +211,13 @@ task.spawn(function()
             if Config.AutoSitups then EquipTool("Situps") player.muscleEvent:FireServer("rep") end
             if Config.AutoPushups then EquipTool("Pushups") player.muscleEvent:FireServer("rep") end
             if Config.AutoHandstands then EquipTool("Handstands") player.muscleEvent:FireServer("rep") end
-            
+
             if Config.AutoPunch or Config.AutoPunchRock then
                 EquipTool("Punch")
                 player.muscleEvent:FireServer("punch", "leftHand")
                 player.muscleEvent:FireServer("punch", "rightHand")
             end
-            
+
             if Config.AutoKill and Config.SelectedPlayer ~= "None" then
                 local target = game.Players:FindFirstChild(Config.SelectedPlayer)
                 if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and player.Character then
@@ -215,7 +227,7 @@ task.spawn(function()
                     player.muscleEvent:FireServer("punch", "rightHand")
                 end
             end
-            
+
             if player.Character and player.Character:FindFirstChild("Humanoid") then
                 if Config.WalkSpeed > 16 then player.Character.Humanoid.WalkSpeed = Config.WalkSpeed end
                 if Config.JumpPower > 50 then player.Character.Humanoid.JumpPower = Config.JumpPower end
